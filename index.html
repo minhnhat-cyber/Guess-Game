@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess Game</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        padding: 8px;
+        }
+
+        .main-container {
+            background-color: white;
+            border-radius: 4px;
+            width: 90%;
+            height: 100%;
+            padding: 4px;
+        }
+
+        .input {
+            font-size: 1.25em;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .input input {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 1.05em;
+            border-radius: 4px;
+            border-width: 1px;
+            padding-left: 10px;
+        }
+
+        button {
+            font-size: 22px;
+            margin-top: 22px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            background-color: blue;
+            color: white;
+            border: 2px solid #000080;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    
+    <div class="main-container">
+        <h1>Guess Game</h1>
+        <p2>Guess a number between 1 - 20, you have 5 chances.</p2>
+
+        <form>
+            <input type="text" id="guessInput" placeholder="Enter your guess">
+            <br><br>
+            <button type="button" id="guessBtn" onclick="guessNumber()">Guess!</button>
+            <button type="button" id="restartBtn" onclick="restartGame()">Restart</button>
+        </form>
+
+        <hr>
+        <div id="attempt">Attempt 0/5</div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let y = Math.floor(Math.random() * 20) + 1;
+        let attempt = 0;
+        let maxAttempt = 5;
+
+        function isNumeric(value) {
+            return value !== "" && !isNaN(value);
+        }
+
+        function initialDisplay() {
+            document.getElementById("guessInput").value = "";
+            document.getElementById("attempt").innerHTML = "Attempt 0/5";
+            document.getElementById("result").innerHTML = "";
+
+            document.getElementById("guessBtn").style.display = "none";
+            document.getElementById("restartBtn").style.display = "block";
+        }
+
+        function restartGame() {
+            attempt = 0;
+
+            document.getElementById("guessInput").value = "";
+            document.getElementById("attempt").innerHTML = "Attempt 0/5";
+            document.getElementById("result").innerHTML = "";
+
+            document.getElementById("restartBtn").style.display = "none";
+            document.getElementById("guessBtn").style.display = "block";
+
+            document.getElementById("guessInput").focus();
+        }
+
+        function endGame(message) {
+            document.getElementById("result").innerHTML = message;
+
+            document.getElementById("guessBtn").style.display = "none";
+            document.getElementById("restartBtn").style.display = "block";
+
+            document.getElementById("guessInput").value = "0";
+            document.getElementById("guessInput").focus();
+        }
+
+        function guessNumber() {
+            let x = document.getElementById("guessInput").value.trim();
+
+            if (x === "" || !isNumeric(x)) {
+                return;
+            }
+
+            x = Number(x);
+
+            attempt++;
+            document.getElementById("attempt").innerHTML = "Attempt " + attempt + "/" + maxAttempt;
+
+            if (x === y) {
+                endGame("You WIN");
+                return;
+            }
+
+            if (attempt >= maxAttempt) {
+                endGame("You LOSE");
+                return;
+            }
+
+            if (x > y) {
+                document.getElementById("result").innerHTML = x + " is too high";
+            } else {
+                document.getElementById("result").innerHTML = x + " is too low";
+            }
+
+            document.getElementById("guessInput").focus();
+        }
+
+        initialDisplay();
+    </script>
+</body>
+</html>
